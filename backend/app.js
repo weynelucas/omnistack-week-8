@@ -8,12 +8,29 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
+// Socket
+const clients = {}
+
+io.on('connection', socket => {
+  const { user } = socket.handshake.query;
+  clients[user] = socket.id;
+});
+
+app.use((req, res, next) => {
+  req.server = io;
+  req.clients = clients;
+
+  return next();
+});
+
+// Database
 mongoose.connect('mongodb://localhost:27017/tindev', { 
   useNewUrlParser: true, 
   useCreateIndex: true 
 });
 requireDir('./src/models');
 
+// Express
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
