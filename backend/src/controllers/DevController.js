@@ -9,7 +9,9 @@ module.exports = {
   async index(req, res) {
     const { user } = req;
 
-    const results = await DevService.findUnratedDevs(user);
+    const results = await DevService
+      .findUnratedDevs(user)
+      .select('-likes -dislikes');
 
     return res.json({ results });
   },
