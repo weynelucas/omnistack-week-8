@@ -2,9 +2,18 @@ const { model } = require('mongoose');
 const GithubService = require('../services/GithubService');
 
 const Dev = model('Dev');
+const DevService = require('../services/DevService');
 
 
 module.exports = {
+  async index(req, res) {
+    const { user } = req;
+
+    const results = await DevService.findUnratedDevs(user);
+
+    return res.json({ results });
+  },
+
   async store(req, res) {
     const { username } = req.body;
     
@@ -19,6 +28,6 @@ module.exports = {
       dev = await Dev.create(data);
     }
 
-    return res.status(201).json(dev);
+    return res.status(201).json(dev.toJSON());
   }
 }

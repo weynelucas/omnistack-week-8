@@ -18,6 +18,6 @@ module.exports = {
 
     await LikeService.like(user, dev, true);
 
-    return res.json(user);
+    return res.json(user.toJSON());
   } 
 }
