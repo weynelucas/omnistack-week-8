@@ -14,20 +14,31 @@ module.exports = {
     return res.json({ results });
   },
 
-  async store(req, res) {
-    const { username } = req.body;
-    
-    if (username === undefined) {
-      return res.sendStatus(400);
-    }
-    
-    var dev = await Dev.findOne({ username: username });
+  async store(req, res, next) {
+    try {
+      const { username } = req.body;
 
-    if (!dev) {
-      const data = await GithubService.findUserByUsername(username);
-      dev = await Dev.create(data);
+      if (username === undefined) {
+        return res.sendStatus(400);
+      }
+
+      var dev = await Dev.findOne({ username: username });
+
+      if (!dev) {
+        const data = await GithubService.findUserByUsername(username);
+        dev = await Dev.create(data);
+      }
+
+      return res.status(201).json(dev.toJSON());
+    } catch (err) {
+      // Handle axios http errors
+      if (err.isAxiosError) {
+        return res
+          .status(err.response.status)
+          .json({ code: 'axios', error: err.message });
+      }
+      return next(err);
     }
 
-    return res.status(201).json(dev.toJSON());
   }
 }
