@@ -25,6 +25,22 @@ export default function Main({ match }) {
     loadUsers();
   }, [match.params.id]);
 
+  async function handleLike(id) {
+    await api.post(`/devs/${id}/likes`, null, {
+      headers: { user: match.params.id }
+    });
+
+    setUsers(users.filter(user => user.id !== id));
+  }
+
+  async function handleDislike(id) {
+    await api.post(`/devs/${id}/dislikes`, null, {
+      headers: { user: match.params.id }
+    });
+
+    setUsers(users.filter(user => user.id !== id));
+  }
+
   return (
     <div className="Main">
       <img src={logo} alt="Tindev"/>
@@ -38,10 +54,10 @@ export default function Main({ match }) {
             </footer>
 
             <div className="Main-buttons">
-              <button>
+              <button onClick={() => handleDislike(user.id)}>
                 <img src={dislike} alt="Dislike"/>
               </button>
-              <button>
+              <button onClick={() => handleLike(user.id)}>
                 <img src={like} alt="Like"/>
               </button>
             </div>
