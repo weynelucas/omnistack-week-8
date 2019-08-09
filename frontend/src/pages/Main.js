@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import api from '../services/api';
 
 import './Main.css';
 import logo from '../assets/logo.svg';
@@ -7,25 +9,44 @@ import dislike from '../assets/dislike.svg';
 
 
 export default function Main({ match }) {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function loadUsers() {
+      const response = await api.get('/devs', {
+        headers: {
+          user: match.params.id,
+        }
+      });
+
+      setUsers(response.data.results);
+    }
+
+    loadUsers();
+  }, [match.params.id]);
+
   return (
     <div className="Main">
       <img src={logo} alt="Tindev"/>
       <ul>
-        <li>
-          <img src="https://avatars2.githubusercontent.com/u/6399202?v=4" alt="Francisco Thiago"/>
-          <footer>
-            <strong>Francisco Thiago</strong>
-            <p>Web Developer. Currently working with Vue.js and Laravel.</p>
-          </footer>
-          <div className="Main-buttons">
-            <button>
-              <img src={like} alt="Like"/>
-            </button>
-            <button>
-              <img src={dislike} alt="Dislike"/>
-            </button>
-          </div>
-        </li>
+        {users.map(user => (
+          <li>
+            <img src={user.avatar} alt={user.username}/>
+            <footer>
+              <strong>{user.name}</strong>
+              <p>{user.bio}</p>
+            </footer>
+
+            <div className="Main-buttons">
+              <button>
+                <img src={dislike} alt="Dislike"/>
+              </button>
+              <button>
+                <img src={like} alt="Like"/>
+              </button>
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   );
