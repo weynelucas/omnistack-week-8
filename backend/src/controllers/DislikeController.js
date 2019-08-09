@@ -1,6 +1,7 @@
 const { model } = require('mongoose');
 
 const Dev = model('Dev');
+const LikeService = require('../services/LikeService');
 
 
 module.exports = {
@@ -15,11 +16,8 @@ module.exports = {
       });
     }
 
-    if (!user.dislikes.includes(dev.id)) {
-      user.dislikes.push(dev.id);
-      await user.save();
-    }
+    await LikeService.like(user, dev, true);
 
-    return res.json(user);
+    return res.json(user.toJSON());
   } 
 }

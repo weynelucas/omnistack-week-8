@@ -11,6 +11,7 @@ const required = authenticate({
   requestProperty: 'user'
 });
 
+router.get('/devs', required, DevController.index);
 router.post('/devs', DevController.store);
 router.post('/devs/:devId/likes', required, LikeController.store);
 router.post('/devs/:devId/dislikes', required, DislikeController.store);

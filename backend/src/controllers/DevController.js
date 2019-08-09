@@ -2,21 +2,45 @@ const { model } = require('mongoose');
 const GithubService = require('../services/GithubService');
 
 const Dev = model('Dev');
+const DevService = require('../services/DevService');
 
 
 module.exports = {
-  async store(req, res) {
-    if (req.body.username === undefined) {
-      return res.sendStatus(400);
-    }
-    
-    var dev = await Dev.findOne({ username: req.body.username });
+  async index(req, res) {
+    const { user } = req;
 
-    if (!dev) {
-      const data = await GithubService.findUserByUsername(req.body.username);
-      dev = await Dev.create(data);
+    const results = await DevService
+      .findUnratedDevs(user)
+      .select('-likes -dislikes');
+
+    return res.json({ results });
+  },
+
+  async store(req, res, next) {
+    try {
+      const { username } = req.body;
+
+      if (username === undefined) {
+        return res.sendStatus(400);
+      }
+
+      var dev = await Dev.findOne({ username: username });
+
+      if (!dev) {
+        const data = await GithubService.findUserByUsername(username);
+        dev = await Dev.create(data);
+      }
+
+      return res.status(201).json(dev.toJSON());
+    } catch (err) {
+      // Handle axios http errors
+      if (err.isAxiosError) {
+        return res
+          .status(err.response.status)
+          .json({ code: 'axios', error: err.message });
+      }
+      return next(err);
     }
 
-    return res.status(201).json(dev);
   }
 }
