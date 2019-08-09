@@ -6,14 +6,16 @@ const Dev = model('Dev');
 
 module.exports = {
   async store(req, res) {
-    if (req.body.username === undefined) {
+    const { username } = req.body;
+    
+    if (username === undefined) {
       return res.sendStatus(400);
     }
     
-    var dev = await Dev.findOne({ username: req.body.username });
+    var dev = await Dev.findOne({ username: username });
 
     if (!dev) {
-      const data = await GithubService.findUserByUsername(req.body.username);
+      const data = await GithubService.findUserByUsername(username);
       dev = await Dev.create(data);
     }
 
