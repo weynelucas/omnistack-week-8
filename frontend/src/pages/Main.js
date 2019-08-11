@@ -35,9 +35,10 @@ export default function Main({ match }) {
     });
 
     socket.on('match', dev => {
-      console.log(dev);
       setMatchDev(dev);
-    })
+    });
+
+    return () => socket.disconnect();
   }, [match.params.id]);
 
   async function handleLike(id) {
