@@ -2,6 +2,7 @@ const { model } = require('mongoose');
 
 const Dev = model('Dev');
 const LikeService = require('../services/LikeService');
+const DevService = require('../services/DevService');
 
 
 module.exports = {
@@ -17,6 +18,11 @@ module.exports = {
     }
 
     const { match } = await LikeService.like(user, dev);
+
+    // Send match signal
+    if (match) {
+      DevService.match(user, dev, req);
+    }
 
     return res.json(dev.toJSON());
   } 

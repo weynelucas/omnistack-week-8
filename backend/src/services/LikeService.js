@@ -15,5 +15,13 @@ module.exports = {
     const match = !dislike && target.likes.includes(source.id);
 
     return { dev: source, match };
+  },
+
+  match(source, target, { server, clients }) {
+    const sourceSocket = clients[source.id];
+    const targetSocket = clients[target.id];
+
+    server.to(sourceSocket).emit('match', target);
+    server.to(targetSocket).emit('match', source);
   }
 }
