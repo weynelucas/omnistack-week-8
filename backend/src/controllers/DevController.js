@@ -1,5 +1,4 @@
 const { model } = require('mongoose');
-const GithubService = require('../services/GithubService');
 
 const Dev = model('Dev');
 const DevService = require('../services/DevService');
@@ -27,7 +26,7 @@ module.exports = {
       var dev = await Dev.findOne({ username: username });
 
       if (!dev) {
-        const data = await GithubService.findUserByUsername(username);
+        const data = await DevService.fromGithub(username);
         dev = await Dev.create(data);
       }
 
