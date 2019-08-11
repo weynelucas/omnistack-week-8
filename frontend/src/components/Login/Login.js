@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 import './Login.css';
-import logo from '../assets/logo.svg';
+import logo from '~/assets/logo.svg';
 
-import api from '../services/api';
+import api from '~/services/api';
 
 
 export default function Login({ history }) {
