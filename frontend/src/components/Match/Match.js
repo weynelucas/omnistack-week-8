@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './Match.css';
-import itsamatch from '../assets/itsamatch.png';
+import itsamatch from '~/assets/itsamatch.png';
 
 export default function Match({ user, onClose }) {
   return (

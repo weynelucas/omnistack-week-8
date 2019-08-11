@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
 
-import api from '../services/api';
-import Match from './Match';
+import api from '~/services/api';
+import Match from '../Match/Match';
 
 import './Main.css';
-import logo from '../assets/logo.svg';
-import like from '../assets/like.svg';
-import dislike from '../assets/dislike.svg';
+import logo from '~/assets/logo.svg';
+import like from '~/assets/like.svg';
+import dislike from '~/assets/dislike.svg';
 
 
 export default function Main({ match }) {
