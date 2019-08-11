@@ -18,6 +18,11 @@ module.exports = {
 
     const { match } = await LikeService.like(user, dev);
 
+    // Send match signal
+    if (match) {
+      LikeService.match(user, dev, req);
+    }
+
     return res.json(dev.toJSON());
   } 
 }

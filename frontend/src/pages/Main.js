@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import io from 'socket.io-client';
 
 import api from '../services/api';
+import Match from './Match';
 
 import './Main.css';
 import logo from '../assets/logo.svg';
@@ -11,7 +13,8 @@ import dislike from '../assets/dislike.svg';
 
 export default function Main({ match }) {
   const [users, setUsers] = useState([]);
-
+  const [matchDev, setMatchDev] = useState(null);
+  
   useEffect(() => {
     async function loadUsers() {
       const response = await api.get('/devs', {
@@ -19,11 +22,22 @@ export default function Main({ match }) {
           user: match.params.id,
         }
       });
-
+      
       setUsers(response.data.results);
     }
-
+    
     loadUsers();
+  }, [match.params.id]);
+  
+  useEffect(() => {
+    const socket = io('http://localhost:3100', {
+      query: { user: match.params.id }
+    });
+
+    socket.on('match', dev => {
+      console.log(dev);
+      setMatchDev(dev);
+    })
   }, [match.params.id]);
 
   async function handleLike(id) {
@@ -72,6 +86,10 @@ export default function Main({ match }) {
       ) :  (
         <div className="Main-empty">Acabou :(</div>
       )}
+    
+    { matchDev && (
+      <Match user={matchDev} onClose={() => setMatchDev(null)}/>
+    )}
     </div>
   );
 }

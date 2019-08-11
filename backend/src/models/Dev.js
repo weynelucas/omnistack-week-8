@@ -6,10 +6,7 @@ const DevSchema = new Schema({
     type: String,
     required: true
   },
-  name: {
-    type: String,
-    required: true,
-  },
+  name: String,
   bio: String,
   avatar: String,
   likes: [{ type: Schema.Types.ObjectId, ref: 'Dev' }],
