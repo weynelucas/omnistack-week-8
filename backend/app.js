@@ -14,6 +14,10 @@ const clients = {}
 io.on('connection', socket => {
   const { user } = socket.handshake.query;
   clients[user] = socket.id;
+
+  socket.on('disconnect', () => {
+    delete clients[user];
+  });
 });
 
 app.use((req, res, next) => {
