@@ -28,6 +28,7 @@ export default function Login({ history }) {
           value={username}
           onChange={event => setUsername(event.target.value)}
           placeholder="Entre com o seu usuário do Github"
+          required
         />
         <button type="submit">Enviar</button>
       </form>
