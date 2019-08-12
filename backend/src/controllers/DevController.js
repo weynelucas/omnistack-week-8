@@ -23,7 +23,9 @@ module.exports = {
         return res.sendStatus(400);
       }
 
-      var dev = await Dev.findOne({ username: username });
+      var dev = await Dev.findOne({ 
+        username: new RegExp(`^${username.toLowerCase()}$`, 'i') 
+      });
 
       if (!dev) {
         const data = await DevService.fromGithub(username);
