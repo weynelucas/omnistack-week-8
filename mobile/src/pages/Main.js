@@ -79,22 +79,25 @@ export default function Main({ navigation }) {
             <Image style={styles.avatar} source={{ uri: user.avatar }} />
 
             <View style={styles.footer}>
-              <Text style={styles.name}>user.name</Text>
+              <Text style={styles.name}>{user.name}</Text>
               <Text numberOfLines={3} style={styles.bio}>{user.bio}</Text>
             </View>
           </View>
         )) }
       </View>
 
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleDislike}>
-          <Image source={dislike} />
-        </TouchableOpacity>
+      { users.length > 0 && (
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleDislike}>
+            <Image source={dislike} />
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleLike}>
-          <Image source={like} />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={styles.button} onPress={handleLike}>
+            <Image source={like} />
+          </TouchableOpacity>
+        </View>
+      ) }
+
     </SafeAreaView>
   );
 }
