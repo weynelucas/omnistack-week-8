@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Platform,
   KeyboardAvoidingView,
@@ -9,9 +9,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import api from '../services/api';
+
 import logo from '../assets/logo.png';
 
-export default function Login() {
+export default function Login({navigation}) {
+  const [username, setUser] = useState('');
+
+  async function handleLogin() {
+    const response = await api.post('/devs', { username });
+    const { _id } = response.data;
+
+    navigation.navigate('Main', { _id });
+  }
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -26,9 +37,13 @@ export default function Login() {
         placeholder="Entre com seu usuário do Github"
         placeholderTextColor="#999"
         style={styles.input}
+        onChangeText={setUser}
       />
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLogin}
+      >
         <Text style={styles.buttonText}>Enviar</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
@@ -41,7 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 30
+    padding: 30,
   },
 
   input: {
@@ -52,7 +67,7 @@ const styles = StyleSheet.create({
     borderColor: '#DDD',
     borderRadius: 4,
     marginTop: 20,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
 
   button: {
@@ -62,12 +77,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   buttonText: {
     color: '#FFF',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   }
 })
