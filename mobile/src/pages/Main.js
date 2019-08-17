@@ -18,7 +18,6 @@ import dislike from '../assets/dislike.png';
 export default function Main({ navigation }) {
   const id = navigation.getParam('user');
   const [users, setUsers] = useState([]);
-  console.log(id);
 
   useEffect(() => {
     async function loadUsers() {
