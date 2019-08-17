@@ -41,7 +41,7 @@ app.use(morgan('dev'));
 
 app.use('/', require('./routes'));
 
-http.listen(3100, '127.0.0.1', () => {
+http.listen(3100, () => {
   const url = `http://${http.address().address}:${http.address().port}`;
   console.log(`Starting development server at ${url}`);
 });
