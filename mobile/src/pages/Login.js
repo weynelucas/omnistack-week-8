@@ -1,26 +1,26 @@
 import React from 'react';
-import { 
+import {
   Platform,
-  KeyboardAvoidingView, 
+  KeyboardAvoidingView,
   Text,
-  StyleSheet, 
-  Image, 
-  TextInput, 
-  TouchableOpacity 
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
 
 import logo from '../assets/logo.png';
 
 export default function Login() {
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       behavior="padding"
       enabled={Platform.OS === 'ios'}
       style={styles.container}
     >
       <Image source={logo} />
 
-      <TextInput  
+      <TextInput
         autoCapitalize="none"
         autoCorrect={false}
         placeholder="Entre com seu usuário do Github"
