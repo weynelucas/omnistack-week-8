@@ -9,35 +9,50 @@ import {
 } from 'react-native';
 
 import api from '../services/api';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import logo from '../assets/logo.png';
 import like from '../assets/like.png';
 import dislike from '../assets/dislike.png';
 
 export default function Main({ navigation }) {
+  const id = navigation.getParam('user');
   const [users, setUsers] = useState([]);
+  console.log(id);
 
   useEffect(() => {
-    const id = navigation.getParam('id');
     async function loadUsers() {
       const response = await api.get('/devs', {
-        headers: { user: id },
+        headers: {
+          user: id,
+        },
       });
 
       setUsers(response.data.results);
     }
 
-  }, []);
+    loadUsers();
+  }, [id]);
+
+  async function handleLogout() {
+    await AsyncStorage.removeItem('user');
+    navigation.navigate('Login');
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image style={styles.logo} source={logo} />
+      <TouchableOpacity onPress={handleLogout}>
+        <Image style={styles.logo} source={logo} />
+      </TouchableOpacity>
 
       <View style={styles.cardsContainer}>
         { users.length === 0 ? (
           <Text style={styles.empty}> Acabou :(</Text>
         ) : users.map((user, index) => (
-          <View style={[styles.card, { zIndex: users.length - index  }]}>
+          <View
+            key={user.id}
+            style={[styles.card, { zIndex: users.length - index  }]}
+          >
             <Image style={styles.avatar} source={{ uri: user.avatar }} />
 
             <View style={styles.footer}>
