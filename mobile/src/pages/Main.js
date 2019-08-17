@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   SafeAreaView,
@@ -8,24 +8,44 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import api from '../services/api';
+
 import logo from '../assets/logo.png';
 import like from '../assets/like.png';
 import dislike from '../assets/dislike.png';
 
-export default function Main() {
+export default function Main({ navigation }) {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const id = navigation.getParam('id');
+    async function loadUsers() {
+      const response = await api.get('/devs', {
+        headers: { user: id },
+      });
+
+      setUsers(response.data.results);
+    }
+
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.logo} source={logo} />
 
       <View style={styles.cardsContainer}>
-        <View style={styles.card}>
-          <Image style={styles.avatar} source={{ uri: 'https://avatars2.githubusercontent.com/u/2254731?v=4' }} />
+        { users.length === 0 ? (
+          <Text style={styles.empty}> Acabou :(</Text>
+        ) : users.map((user, index) => (
+          <View style={[styles.card, { zIndex: users.length - index  }]}>
+            <Image style={styles.avatar} source={{ uri: user.avatar }} />
 
-          <View style={styles.footer}>
-            <Text style={styles.name}>Diego Fernandes</Text>
-            <Text numberOfLines={3} style={styles.bio}>CTO na @Rocketseat. Apaixonado por Javascript, ReactJS, React Native, NodeJS e todo ecossistema em torno dessas tecnologias."</Text>
+            <View style={styles.footer}>
+              <Text style={styles.name}>user.name</Text>
+              <Text numberOfLines={3} style={styles.bio}>{user.bio}</Text>
+            </View>
           </View>
-        </View>
+        )) }
       </View>
 
       <View style={styles.buttonsContainer}>
@@ -51,6 +71,13 @@ const styles = StyleSheet.create({
 
   logo: {
     marginTop: 30,
+  },
+
+  empty: {
+    alignSelf: 'center',
+    color: '#999',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 
   cardsContainer: {
