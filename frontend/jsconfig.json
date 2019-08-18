@@ -3,13 +3,15 @@
     "target": "ES6",
     "module": "commonjs",
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
+    "baseUrl": "./src/",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": [
+        "./src/*"
+      ]
     }
   },
   "exclude": [
     "build",
-    "node_modules",
+    "node_modules"
   ]
 }
