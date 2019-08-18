@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import logo from '../assets/logo.png';
 import like from '../assets/like.png';
 import dislike from '../assets/dislike.png';
-import itsamatch from '../assets/istamatch.png';
+import itsamatch from '../assets/itsamatch.png';
 
 export default function Main({ navigation }) {
   const id = navigation.getParam('user');
@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: 3,
   },
 
   matchImage: {
