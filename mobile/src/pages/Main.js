@@ -41,7 +41,8 @@ export default function Main({ navigation }) {
       query: { user: id },
     });
 
-    socket.on('match', (dev) => setMatchDev(dev)); 
+    socket.on('match', (dev) => setMatchDev(dev));
+
   }, [id]);
 
   async function handleLike() {
