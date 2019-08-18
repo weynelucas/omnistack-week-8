@@ -37,11 +37,13 @@ export default function Main({ navigation }) {
   }, [id]);
 
   useEffect(() => {
-    const socket = io.connect('http://192.168.0.193:3100', {
+    const socket = io.connect('http://localhost:3100', {
       query: { user: id },
     });
 
-    socket.on('match', (dev) => setMatchDev(dev));
+    socket.on('match', (dev) => {
+      setMatchDev(dev);
+    });
 
   }, [id]);
 
